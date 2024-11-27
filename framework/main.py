@@ -74,12 +74,12 @@ async def main_loop():
     asyncio.create_task(snapshot_state(shared_data.state, memory, interval=60))
 
     while True:
-        activity_name = select_activity(shared_data.state, activity_functions)
+        activity_name = await select_activity(shared_data.state, activity_functions, memory)
         activity_func = activity_functions[activity_name]
 
         # Set current activity with start time
         shared_data.current_activity['name'] = activity_name
-        shared_data.current_activity['start_time'] = time.time()  # Store start time as UNIX timestamp
+        shared_data.current_activity['start_time'] = time.time()
 
         print(f"Starting activity: {activity_name}")
         await activity_func(shared_data.state, memory)
